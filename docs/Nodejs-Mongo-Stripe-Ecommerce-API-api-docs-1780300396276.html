@@ -1,0 +1,1423 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8"/>
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
+
+<title>Nodejs-Mongo-Stripe-Ecommerce-API</title>
+
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+/>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+
+:root{
+
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --card2:#f1f5f9;
+  --text:#0f172a;
+  --text2:#64748b;
+  --border:#e2e8f0;
+  --sidebar:#ffffff;
+  --hover:#f1f5f9;
+}
+
+body.dark{
+
+  --bg:#0b1120;
+  --card:#111827;
+  --card2:#172033;
+  --text:#f8fafc;
+  --text2:#94a3b8;
+  --border:rgba(255,255,255,0.08);
+  --sidebar:#111827;
+  --hover:#1e293b;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+.layout{
+  display:flex;
+}
+
+.sidebar{
+
+  width:320px;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+
+  position:fixed;
+
+  top:0;
+  left:0;
+  bottom:0;
+
+  overflow-y:auto;
+
+  padding:24px;
+
+  z-index:1000;
+
+  transition:.3s;
+}
+
+.logo{
+
+  font-size:32px;
+  font-weight:800;
+  color:#3b82f6;
+}
+
+.logo-sub{
+
+  color:var(--text2);
+  margin:10px 0 30px;
+  line-height:1.7;
+}
+
+.sidebar-group{
+  margin-bottom:28px;
+}
+
+.sidebar-group-title{
+
+  font-size:12px;
+  font-weight:700;
+  color:var(--text2);
+  margin-bottom:10px;
+  letter-spacing:1px;
+}
+
+.sidebar-link{
+
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  text-decoration:none;
+
+  color:var(--text);
+
+  margin-bottom:8px;
+
+  transition:.2s;
+}
+
+.sidebar-link:hover{
+  background:var(--hover);
+}
+
+.sidebar-method{
+
+  padding:6px 10px;
+  border-radius:8px;
+  color:white;
+  font-size:11px;
+  font-weight:700;
+  min-width:60px;
+  text-align:center;
+}
+
+.sidebar-title{
+  font-size:13px;
+  line-height:1.5;
+}
+
+.main{
+
+  margin-left:320px;
+  width:calc(100% - 320px);
+
+  padding:30px;
+}
+
+.header{
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  border-radius:22px;
+
+  padding:30px;
+
+  margin-bottom:30px;
+}
+
+.title{
+
+  font-size:42px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.subtitle{
+
+  color:var(--text2);
+  line-height:1.8;
+}
+
+.stats{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+  gap:18px;
+
+  margin-top:30px;
+}
+
+.stat-card{
+
+  background:var(--card2);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  padding:20px;
+}
+
+.stat-number{
+
+  font-size:34px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.stat-label{
+  color:var(--text2);
+}
+
+.group-section{
+  margin-bottom:40px;
+}
+
+.group-header{
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-bottom:20px;
+}
+
+.group-title{
+
+  font-size:24px;
+  font-weight:800;
+}
+
+.group-subtitle{
+  color:var(--text2);
+  margin-top:4px;
+}
+
+.group-count{
+
+  background:#3b82f6;
+  color:white;
+
+  padding:10px 16px;
+
+  border-radius:12px;
+
+  font-size:13px;
+  font-weight:700;
+}
+
+.endpoint{
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  margin-bottom:22px;
+}
+
+.endpoint-bar{
+
+  padding:22px;
+
+  background:var(--card2);
+
+  border-bottom:1px solid var(--border);
+}
+
+.endpoint-main{
+
+  display:flex;
+  gap:16px;
+}
+
+.method-badge{
+
+  padding:10px 16px;
+
+  border-radius:10px;
+
+  color:white;
+
+  font-size:13px;
+  font-weight:700;
+
+  min-width:90px;
+
+  text-align:center;
+
+  height:fit-content;
+}
+
+.route-path{
+
+  font-size:22px;
+  font-weight:800;
+  margin-bottom:6px;
+  word-break:break-word;
+}
+
+.route-description{
+
+  color:var(--text2);
+  line-height:1.7;
+}
+
+.quick-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+  gap:16px;
+
+  padding:22px;
+}
+
+.quick-card{
+
+  background:var(--card2);
+
+  border:1px solid var(--border);
+
+  border-radius:16px;
+
+  padding:18px;
+}
+
+.quick-label{
+
+  font-size:12px;
+  color:var(--text2);
+  margin-bottom:8px;
+}
+
+.quick-value{
+  line-height:1.7;
+}
+
+.sections-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:18px;
+
+  padding:0 22px 22px;
+}
+
+.section{
+
+  background:var(--card2);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  overflow:hidden;
+}
+
+.section-title{
+
+  padding:16px 18px;
+
+  border-bottom:1px solid var(--border);
+
+  font-weight:700;
+}
+
+.table-wrapper{
+  overflow:auto;
+}
+
+table{
+
+  width:100%;
+  border-collapse:collapse;
+  min-width:400px;
+}
+
+th,td{
+
+  padding:14px;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+}
+
+th{
+
+  font-size:13px;
+  color:var(--text2);
+}
+
+.json-preview{
+
+  margin:16px;
+
+  border-radius:16px;
+
+  overflow:hidden;
+
+  background:#020617;
+}
+
+.json-title{
+
+  padding:12px 16px;
+
+  background:#111827;
+
+  color:white;
+
+  font-size:13px;
+  font-weight:700;
+}
+
+.json-preview pre{
+
+  padding:18px;
+
+  overflow:auto;
+
+  color:#e2e8f0;
+
+  font-size:13px;
+
+  line-height:1.7;
+}
+
+.mobile-topbar{
+
+  display:none;
+}
+
+.overlay{
+  display:none;
+}
+
+@media(max-width:1024px){
+
+  .sections-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .mobile-topbar{
+
+    display:flex;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:70px;
+
+    background:var(--card);
+
+    border-bottom:1px solid var(--border);
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 20px;
+
+    z-index:2000;
+  }
+
+  .sidebar{
+
+    transform:translateX(-100%);
+  }
+
+  .sidebar.active{
+    transform:translateX(0);
+  }
+
+  .overlay.active{
+
+    display:block;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.5);
+
+    z-index:1500;
+  }
+
+  .main{
+
+    margin-left:0;
+    width:100%;
+
+    padding:90px 16px 20px;
+  }
+
+  .title{
+    font-size:32px;
+  }
+
+  .group-header{
+
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .endpoint-main{
+    flex-direction:column;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="mobile-topbar">
+
+  <div class="logo">
+    IntelliDoc
+  </div>
+
+  <button id="menuBtn">
+    ☰
+  </button>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="layout">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+      IntelliDoc
+    </div>
+
+    <div class="logo-sub">
+      Smart API Documentation Generator
+    </div>
+
+    
+    <div class="sidebar-group">
+
+      <div class="sidebar-group-title">
+        PAYMENT
+      </div>
+
+      
+          <a href="#route-0-0" class="sidebar-link">
+
+            <span
+              class="sidebar-method"
+              style="background:#3b82f6"
+            >
+              POST
+            </span>
+
+            <div>
+
+              <div class="sidebar-title">
+                /payment
+              </div>
+
+            </div>
+
+          </a>
+        
+
+    </div>
+  
+    <div class="sidebar-group">
+
+      <div class="sidebar-group-title">
+        AUTH
+      </div>
+
+      
+          <a href="#route-1-0" class="sidebar-link">
+
+            <span
+              class="sidebar-method"
+              style="background:#3b82f6"
+            >
+              POST
+            </span>
+
+            <div>
+
+              <div class="sidebar-title">
+                /api/v1/auth/register/
+              </div>
+
+            </div>
+
+          </a>
+        
+          <a href="#route-1-1" class="sidebar-link">
+
+            <span
+              class="sidebar-method"
+              style="background:#3b82f6"
+            >
+              POST
+            </span>
+
+            <div>
+
+              <div class="sidebar-title">
+                /api/v1/auth/login
+              </div>
+
+            </div>
+
+          </a>
+        
+
+    </div>
+  
+
+  </aside>
+
+  <main class="main">
+
+    <header class="header">
+
+      <h1 class="title">
+        Nodejs-Mongo-Stripe-Ecommerce-API
+      </h1>
+
+      <div class="subtitle">
+
+        <div>
+          <strong>Base URL:</strong>
+          http://localhost:3000
+        </div>
+
+        <div>
+          <strong>Version:</strong>
+          1.0.0
+        </div>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat-card">
+
+          <div class="stat-number">
+            2
+          </div>
+
+          <div class="stat-label">
+            Route Modules
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-number">
+            3
+          </div>
+
+          <div class="stat-label">
+            Total Endpoints
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+    
+    <section class="group-section">
+
+      <div class="group-header">
+
+        <div>
+
+          <div class="group-title">
+            PAYMENT MODULE
+          </div>
+
+          <div class="group-subtitle">
+            routes/payment.js
+          </div>
+
+        </div>
+
+        <div class="group-count">
+          1 Endpoints
+        </div>
+
+      </div>
+
+      
+          <section class="endpoint" id="route-0-0">
+
+            <div class="endpoint-bar">
+
+              <div class="endpoint-main">
+
+                <span
+                  class="method-badge"
+                  style="background:#3b82f6"
+                >
+                  POST
+                </span>
+
+                <div>
+
+                  <div class="route-path">
+                    /payment
+                  </div>
+
+                  <div class="route-description">
+                    Process a payment transaction using Stripe
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- QUICK INFO -->
+
+            <div class="quick-grid">
+
+              <div class="quick-card">
+
+                <div class="quick-label">
+                  Authentication
+                </div>
+
+                <div class="quick-value">
+                  JWT
+                </div>
+
+              </div>
+
+              <div class="quick-card">
+
+                <div class="quick-label">
+                  Authorization
+                </div>
+
+                <div class="quick-value">
+                  owner, admin
+                </div>
+
+              </div>
+
+              
+                    <div class="quick-card">
+
+                      <div class="quick-label">
+                        Middleware
+                      </div>
+
+                      <div class="quick-value">
+                        accessLevelVerifier
+                      </div>
+
+                    </div>
+                  
+
+              
+                    <div class="quick-card">
+
+                      <div class="quick-label">
+                        Related Files
+                      </div>
+
+                      <div class="quick-value">
+                        controllers/PaymentController.js<br/>middlewares/verifyToken.js
+                      </div>
+
+                    </div>
+                  
+
+            </div>
+
+            <div class="sections-grid">
+
+              
+
+              
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Request Body
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Type</th>
+                              <th>Required</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>tokenId</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                              </tr>
+                            
+                              <tr>
+                                <td>amount</td>
+                                <td>number</td>
+                                <td>Yes</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Responses
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Status</th>
+                              <th>Message</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>200</td>
+                                <td>Success</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Error Handling
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Status</th>
+                              <th>Message</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>401</td>
+                                <td>You are not authenticated</td>
+                              </tr>
+                            
+                              <tr>
+                                <td>403</td>
+                                <td>You are not allowed to perform this task</td>
+                              </tr>
+                            
+                              <tr>
+                                <td>500</td>
+                                <td>Stripe processing error</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+            </div>
+
+          </section>
+        
+
+    </section>
+  
+    <section class="group-section">
+
+      <div class="group-header">
+
+        <div>
+
+          <div class="group-title">
+            AUTH MODULE
+          </div>
+
+          <div class="group-subtitle">
+            routes/auth.js
+          </div>
+
+        </div>
+
+        <div class="group-count">
+          2 Endpoints
+        </div>
+
+      </div>
+
+      
+          <section class="endpoint" id="route-1-0">
+
+            <div class="endpoint-bar">
+
+              <div class="endpoint-main">
+
+                <span
+                  class="method-badge"
+                  style="background:#3b82f6"
+                >
+                  POST
+                </span>
+
+                <div>
+
+                  <div class="route-path">
+                    /api/v1/auth/register/
+                  </div>
+
+                  <div class="route-description">
+                    Register a new user account with hashed password
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- QUICK INFO -->
+
+            <div class="quick-grid">
+
+              <div class="quick-card">
+
+                <div class="quick-label">
+                  Authentication
+                </div>
+
+                <div class="quick-value">
+                  Public
+                </div>
+
+              </div>
+
+              <div class="quick-card">
+
+                <div class="quick-label">
+                  Authorization
+                </div>
+
+                <div class="quick-value">
+                  None
+                </div>
+
+              </div>
+
+              
+
+              
+                    <div class="quick-card">
+
+                      <div class="quick-label">
+                        Related Files
+                      </div>
+
+                      <div class="quick-value">
+                        controllers/AuthController.js<br/>models/User.js
+                      </div>
+
+                    </div>
+                  
+
+            </div>
+
+            <div class="sections-grid">
+
+              
+
+              
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Request Body
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Type</th>
+                              <th>Required</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>username</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                              </tr>
+                            
+                              <tr>
+                                <td>email</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                              </tr>
+                            
+                              <tr>
+                                <td>password</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Responses
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Status</th>
+                              <th>Message</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>201</td>
+                                <td>string</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Error Handling
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Status</th>
+                              <th>Message</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>500</td>
+                                <td>Something went wrong please try again</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+            </div>
+
+          </section>
+        
+          <section class="endpoint" id="route-1-1">
+
+            <div class="endpoint-bar">
+
+              <div class="endpoint-main">
+
+                <span
+                  class="method-badge"
+                  style="background:#3b82f6"
+                >
+                  POST
+                </span>
+
+                <div>
+
+                  <div class="route-path">
+                    /api/v1/auth/login
+                  </div>
+
+                  <div class="route-description">
+                    Authenticate user and return a JWT access token
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- QUICK INFO -->
+
+            <div class="quick-grid">
+
+              <div class="quick-card">
+
+                <div class="quick-label">
+                  Authentication
+                </div>
+
+                <div class="quick-value">
+                  Public
+                </div>
+
+              </div>
+
+              <div class="quick-card">
+
+                <div class="quick-label">
+                  Authorization
+                </div>
+
+                <div class="quick-value">
+                  None
+                </div>
+
+              </div>
+
+              
+
+              
+                    <div class="quick-card">
+
+                      <div class="quick-label">
+                        Related Files
+                      </div>
+
+                      <div class="quick-value">
+                        controllers/AuthController.js<br/>config/api.js
+                      </div>
+
+                    </div>
+                  
+
+            </div>
+
+            <div class="sections-grid">
+
+              
+
+              
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Request Body
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Type</th>
+                              <th>Required</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>username</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                              </tr>
+                            
+                              <tr>
+                                <td>password</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Responses
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Status</th>
+                              <th>Message</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>200</td>
+                                <td>Success</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+              
+                    <div class="section">
+
+                      <div class="section-title">
+                        Error Handling
+                      </div>
+
+                      <div class="table-wrapper">
+
+                        <table>
+
+                          <thead>
+                            <tr>
+                              <th>Status</th>
+                              <th>Message</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            
+                              <tr>
+                                <td>500</td>
+                                <td>User not exists or invalid credentials</td>
+                              </tr>
+                            
+
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                    </div>
+                  
+
+            </div>
+
+          </section>
+        
+
+    </section>
+  
+
+  </main>
+
+</div>
+
+<script>
+
+const menuBtn =
+  document.getElementById("menuBtn");
+
+const sidebar =
+  document.getElementById("sidebar");
+
+const overlay =
+  document.getElementById("overlay");
+
+menuBtn?.addEventListener("click", () => {
+
+  sidebar.classList.add("active");
+
+  overlay.classList.add("active");
+
+});
+
+overlay?.addEventListener("click", () => {
+
+  sidebar.classList.remove("active");
+
+  overlay.classList.remove("active");
+
+});
+
+</script>
+
+</body>
+</html>
